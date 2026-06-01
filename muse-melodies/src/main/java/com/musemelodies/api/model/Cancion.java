@@ -22,6 +22,7 @@ public class Cancion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // TÍTULO: No puede estar vacío y debe estar entre 1-100 caracteres.
     @NotBlank(message = "El título no puede estar vacío")
     @Size(min = 1, max = 100, message = "El título debe tener entre 1 y 100 caracteres")
     @Column(nullable = false, length = 100)
@@ -29,15 +30,24 @@ public class Cancion {
 
     private Artista artista; //O si son muchos artistas sería:
 
+    /*
+        @ManyToMany(mappedBy = "canciones")
+        @JsonIgnore // Evita que al pintar el artista vuelva a pintar la canción
+        private Set<Artista> artistas = new HashSet<>();
+    */
+
+    // ÁLBUM: Debe estar entre 1-100 caracteres.
     @Size(min = 1, max = 100, message = "El álbum debe tener entre 1 y 100 caracteres")
     @Column(nullable = false, length = 100)
     private String album;
 
+    // DURACIÓN (segundos): No puede estar vacío y debe ser de entre 1-10 minutos.
     @NotBlank(message = "La duración no puede estar vacía")
     @Min(value = 60, message = "La duración no puede ser menor a un minuto")
     @Max(value = 600, message = "La duración no puede ser mayor a 10 minutos")
     private Integer duracionSegundos;
-
+    
+    // EXPLICIDAD: No puede estar vacío.
     @NotBlank(message = "Tiene que indicarse si la canción es explícita o no")
     private Boolean explicita;
 }
