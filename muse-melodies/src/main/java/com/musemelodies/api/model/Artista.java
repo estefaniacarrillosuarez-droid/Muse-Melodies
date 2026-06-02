@@ -15,8 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "artistas")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
