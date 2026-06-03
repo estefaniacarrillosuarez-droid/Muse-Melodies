@@ -1,4 +1,4 @@
-package com.musemelodies.api.security_cambio;
+package com.musemelodies.api.security;
 
 import java.io.IOException;
 
