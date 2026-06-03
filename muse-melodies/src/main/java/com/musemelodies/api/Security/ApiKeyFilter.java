@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+// @Component permite que Spring detecte automáticamente este filtro.
 @Component
 public class ApiKeyFilter extends OncePerRequestFilter {
 
