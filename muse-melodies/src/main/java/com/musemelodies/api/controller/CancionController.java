@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/canciones")
 public class CancionController {
@@ -25,6 +27,21 @@ public class CancionController {
         return ResponseEntity.ok(cancionService.listAll());
     }
 
+    // Filtrar de forma dinámica en Postman
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<Cancion>> filtrarCanciones(
+            @RequestParam(required = false) String album,
+            @RequestParam(required = false) String paisArtista) {
+        
+        if (album != null) {
+            return ResponseEntity.ok(cancionService.buscarPorAlbum(album));
+        }
+        if (paisArtista != null) {
+            return ResponseEntity.ok(cancionService.buscarExplicitasPorPais(paisArtista));
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     // GET /api/v1/canciones/{id} -> 200 OK / 404 Not Found
     // Uso de .map().orElse() sin usar .get() directamente (Requisito RA9 d)
     @GetMapping("/{id}")
@@ -36,14 +53,14 @@ public class CancionController {
 
     // POST /api/v1/canciones -> 201 Created
     @PostMapping
-    public ResponseEntity<Cancion> crearCancion(@RequestBody Cancion cancion) {
+    public ResponseEntity<Cancion> crearCancion(@Valid @RequestBody Cancion cancion) {
         Cancion nuevaCancion = cancionService.save(cancion);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaCancion);
     }
 
     // PUT /api/v1/canciones/{id} -> 200 OK / 404 Not Found
     @PutMapping("/{id}")
-    public ResponseEntity<Cancion> actualizarCancion(@PathVariable Long id, @RequestBody Cancion cancionDetalles) {
+    public ResponseEntity<Cancion> actualizarCancion(@PathVariable Long id, @Valid @RequestBody Cancion cancionDetalles) {
         return cancionService.update(id, cancionDetalles)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

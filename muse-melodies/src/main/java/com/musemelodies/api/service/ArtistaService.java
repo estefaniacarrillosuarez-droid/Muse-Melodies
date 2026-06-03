@@ -38,6 +38,21 @@ public class ArtistaService {
         return artistaRepository.findByNombreContainingIgnoreCase(nombre, sort);
     }
 
+    // Buscar por país
+    public List<Artista> findByPais(String pais) {
+        return artistaRepository.findByPaisOrigenContainingIgnoreCase(pais);
+    }
+
+    // Buscar desde un año de debut
+    public List<Artista> findDesdeAnio(Integer anio) {
+        return artistaRepository.findArtistasDesdeAnio(anio);
+    }
+
+    // Contar canciones de un artista
+    public Long contarCanciones(Long artistaId) {
+        return artistaRepository.contarCancionesPorArtista(artistaId);
+    }
+
     // Guarda un nuevo artista en la base de datos.
     public Artista save(Artista artista) {
         return artistaRepository.save(artista);

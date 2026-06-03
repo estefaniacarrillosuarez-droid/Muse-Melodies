@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.musemelodies.api.model.Artista;
+import com.musemelodies.api.model.Cancion;
 import com.musemelodies.api.service.ArtistaService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/artistas")
@@ -57,6 +60,24 @@ public class ArtistaController {
         );
     }
 
+    // Filtra artistas por su país
+    @GetMapping("/filtrar-pais")
+    public ResponseEntity<List<Artista>> buscarPorPais(@RequestParam String pais) {
+        return ResponseEntity.ok(artistaService.findByPais(pais));
+    }
+
+    // Mostrar artistas desde un año determinado
+    @GetMapping("/desde-anio/{anio}")
+    public ResponseEntity<List<Artista>> buscarDesdeAnio(@PathVariable Integer anio) {
+        return ResponseEntity.ok(artistaService.findDesdeAnio(anio));
+    }
+
+    // Muestra el número total de canciones del artista
+    @GetMapping("/{id}/total-canciones")
+    public ResponseEntity<Long> obtenerTotalCanciones(@PathVariable Long id) {
+        return ResponseEntity.ok(artistaService.contarCanciones(id));
+    }
+
     // Busca un artista por su ID.
     // Devuelve 404 si no existe.
     @GetMapping("/{id}")
@@ -66,9 +87,17 @@ public class ArtistaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Devuelve todas las canciones que pertenecen a un artista concreto
+    @GetMapping("/{id}/canciones")
+    public ResponseEntity<List<Cancion>> listarCancionesDeArtista(@PathVariable Long id) {
+        return artistaService.findById(id)
+                .map(artista -> ResponseEntity.ok(artista.getCanciones()))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // Crea un nuevo artista utilizando los datos recibidos.
     @PostMapping
-    public ResponseEntity<Artista> crearArtista(@RequestBody Artista artista) {
+    public ResponseEntity<Artista> crearArtista(@Valid @RequestBody Artista artista) {
         Artista nuevoArtista = artistaService.save(artista);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoArtista);
     }
@@ -78,7 +107,7 @@ public class ArtistaController {
     @PutMapping("/{id}")
     public ResponseEntity<Artista> actualizarArtista(
             @PathVariable Long id,
-            @RequestBody Artista artistaDetalles
+            @Valid @RequestBody Artista artistaDetalles
     ) {
 
         return artistaService.update(id, artistaDetalles)

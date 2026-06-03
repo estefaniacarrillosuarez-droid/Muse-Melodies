@@ -29,6 +29,16 @@ public class CancionService {
         return cancionRepository.findById(id);
     }
 
+    // Lógica para buscar por álbum
+    public List<Cancion> buscarPorAlbum(String album) {
+        return cancionRepository.findByAlbumContainingIgnoreCase(album);
+    }
+
+    // Lógica para buscar explícitas por país del artista
+    public List<Cancion> buscarExplicitasPorPais(String pais) {
+        return cancionRepository.findCancionesExplicitasPorPais(pais);
+    }
+
     // Guarda una nueva canción en la base de datos
     public Cancion save(Cancion cancion) {
         return cancionRepository.save(cancion);
