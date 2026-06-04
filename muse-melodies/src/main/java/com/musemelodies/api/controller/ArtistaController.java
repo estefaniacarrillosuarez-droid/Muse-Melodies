@@ -39,14 +39,18 @@ public class ArtistaController {
         return ResponseEntity.ok(artistaService.listAll());
     }
 
-    // Busca artistas cuyo nombre contenga el texto indicado.
-    // También permite ordenar los resultados por el campo seleccionado.
+    // Busca artistas por nombre. 
+    // Si no se idica nombre, devuelve todos los artistas.
+    // También permite ordenar los resultados.
     @GetMapping("/buscar")
     public ResponseEntity<List<Artista>> buscarPorNombre(
-            @RequestParam String nombre,
+            @RequestParam(required = false) String nombre,
             @RequestParam(defaultValue = "nombre") String sortBy,
             @RequestParam(defaultValue = "asc") String order
     ) {
+        if (nombre == null || nombre.isEmpty()) {
+            return ResponseEntity.ok(artistaService.listAll());
+        }
 
         Sort.Direction direccion =
                 order.equalsIgnoreCase("desc")
