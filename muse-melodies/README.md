@@ -16,11 +16,11 @@ La aplicación utiliza:
 
 Además, se aplican buenas prácticas como:
 
-- Arquitectura por capas(Controller, Service y Repository)
-- Uso de ResponseEnity y códigos HTTP adecuados.
+- Arquitectura por capas (Controller, Service y Repository)
+- Uso de ResponseEntity y códigos HTTP adecuados.
 - Seguridad mediante API Key
 - Relaciones entre entidades con JPA
--
+
 
 ## Cómo iniciar el proyecto
 

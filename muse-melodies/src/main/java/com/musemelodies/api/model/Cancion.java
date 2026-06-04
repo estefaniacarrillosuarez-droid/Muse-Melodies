@@ -31,7 +31,7 @@ public class Cancion {
     @Column(nullable = false, length = 100)
     private String titulo;
 
-    // ARTISTA: ...
+    // ARTISTA: Muchas canciones pueden estar atribuidas a un artista.
     @ManyToOne
     @JoinColumn(name = "artista_id", nullable = false)
     @JsonIgnoreProperties("canciones") // Evita bucles en el JSON
