@@ -31,14 +31,14 @@ public class Artista {
     // Nombre del artista.
     // Es un campo obligatorio y debe tener entre 2 y 100 caracteres.
     // No se permitirá guardar artistas sin nombre.
-    @NotBlank(message = "El nombre no puede estar vacío")
+    @NotBlank(message = "El nombre no puede estar vacio")
     @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
     @Column(nullable = false, length = 100)
     private String nombre;
     
     // País de origen del artista.
     // Se utiliza para poder filtrar artistas por procedencia.
-    @Size(max = 50, message = "El país no puede superar 50 caracteres")
+    @Size(max = 50, message = "El pais no puede superar 50 caracteres")
     @Column(name = "pais_origen", length = 50)
     private String paisOrigen;
     

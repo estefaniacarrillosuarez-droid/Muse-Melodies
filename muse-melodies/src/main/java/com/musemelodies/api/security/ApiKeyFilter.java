@@ -41,7 +41,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         if (apiKey == null || !apiKey.equals(apiKeySecret)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"API Key inválida o faltante\"}");
+            response.getWriter().write("{\"error\": \"API Key invalida o faltante\"}");
             return;
         }
 
