@@ -31,10 +31,30 @@ Es necesario tener instalado
 - Java 17 o superior
 - Maven
 - MySQL Server
-- MySQL Workbench (opcional)
+- MySQL Workbench (u otro gestor de base de datos)
 - Visual Studio Code o IntelliJ
 - Thunder Client
 
-### 2. Clonar o descargar el proyecto
+### 2. Configuración de la Base de Datos
+La aplicación está configurada para conectarse a un servidor local de MySQL. 
+1. Abre tu gestor de base de datos (phpMyAdmin, Workbench, etc.).
+2. No es necesario crear la base de datos manualmente si tienes activada la propiedad `createDatabaseIfNotExist=true` en la URL de conexión.
+3. Verifica el archivo `src/main/resources/application.properties` y modifica las credenciales según tu servidor local:
+
+```properties
+spring.datasource.username=tu_usuario_mysql
+spring.datasource.password=tu_contraseña_mysql
+```
+
+### 3. Clonar o descargar el proyecto
 
 Importar el proyecto en el IDE seleccionado.
+
+### 4. Compilación y Ejecución
+* **Desde la Terminal:** Navega hasta la raíz del proyecto y ejecuta:
+
+```
+mvn spring-boot:run
+```
+
+Al arrancar, Hibernate generará de forma automática las tablas `artistas`, `canciones`, `generos` y la tabla intermedia `artista_genero` en tu base de datos gracias a la propiedad `spring.jpa.hibernate.ddl-auto=update`.
