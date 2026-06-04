@@ -50,11 +50,40 @@ spring.datasource.password=tu_contraseña_mysql
 
 Importar el proyecto en el IDE seleccionado.
 
-### 4. Compilación y Ejecución
-* **Desde la Terminal:** Navega hasta la raíz del proyecto y ejecuta:
+### 4. Compilar y Ejecutar proyecto
+**Desde la Terminal:** Navega hasta la raíz del proyecto y ejecuta:
 
 ```
 mvn spring-boot:run
 ```
 
 Al arrancar, Hibernate generará de forma automática las tablas `artistas`, `canciones`, `generos` y la tabla intermedia `artista_genero` en tu base de datos gracias a la propiedad `spring.jpa.hibernate.ddl-auto=update`.
+
+### 5. Cómo probar los Endpoints protegidos (POST, PUT, DELETE)
+Dado que la API cuenta con un filtro de seguridad (`ApiKeyFilter`), si intentas crear, actualizar o eliminar un recurso sin autenticarte, el servidor rechazará la petición con un error `401 Unauthorized`.
+
+Para identificarte correctamente, debes incluir la siguiente cabecera HTTP en cada petición de escritura:
+
+* **Clave (Header Key):** `X-API-KEY`
+* **Valor (Header Value):** `musemelodies123`
+
+A continuación se detalla cómo configurarlo en las principales herramientas:
+
+#### 1. En Postman 
+1. Selecciona el método de la petición (`POST`, `PUT` o `DELETE`) e introduce la URL (ej. `http://localhost:8080/api/v1/artistas`).
+2. Justo debajo de la barra de direcciones, haz clic en la pestaña **Headers** (Cabeceras).
+3. En la columna **Key**, escribe: `X-API-KEY`.
+4. En la columna **Value**, escribe: `musemelodies123`.
+5. *(Opcional)* Si vas a enviar datos en un `POST` o `PUT`, recuerda ir a la pestaña **Body**, seleccionar **raw** y cambiar el desplegable de la derecha a **JSON** para pegar tu objeto.
+6. Haz clic en **Send**.
+
+---
+
+#### 2. En Thunder Client (VS Code) 
+1. Abre una nueva petición en Thunder Client seleccionando el método correspondiente e introduciendo la URL del endpoint.
+2. En las pestañas inferiores de la petición, haz clic en **Headers**.
+3. Verás una tabla con dos columnas principales: *Name* y *Value*.
+4. En el campo **Name**, escribe: `X-API-KEY`.
+5. En el campo **Value**, escribe: `musemelodies123`.
+6. Al igual que en Postman, si necesitas enviar datos, ve a la pestaña **Body**, asegúrate de que esté seleccionado **JSON** y escribe tu código.
+7. Haz clic en el botón **Send**.
