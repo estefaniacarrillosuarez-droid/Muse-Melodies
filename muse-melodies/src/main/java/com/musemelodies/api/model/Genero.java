@@ -32,7 +32,7 @@ public class Genero {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El nombre del género no puede estar vacío")
+    @NotBlank(message = "El nombre del genero no puede estar vacio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     @Column(nullable = false, unique = true, length = 50)
     private String nombre;
