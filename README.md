@@ -87,3 +87,18 @@ A continuación se detalla cómo configurarlo en las principales herramientas:
 5. En el campo **Value**, escribe: `musemelodies123`.
 6. Al igual que en Postman, si necesitas enviar datos, ve a la pestaña **Body**, asegúrate de que esté seleccionado **JSON** y escribe tu código.
 7. Haz clic en el botón **Send**.
+
+## Estructura del proyecto
+
+El proyecto sigue una arquitectura por capas para separar responsabilidades y mantener un código limpio y escalable.
+
+La estrctura utilizada es: 
+
+* Controller -> Gestiona las peticiones HTTP y las respuestas de la API.
+* Service -> Contiene la lógica de negocio de la aplicación.
+* Repository -> Gestiona el acceso a la base de datos mediante Spring Data JPA.
+* Model -> Define las entidades JPA y las relaciones entre ellas.
+* Security -> Gestiona la autenticación mediante API Key.
+* Exception -> Contiene el manejo global de excepciones mediante @ControllerAdvice.
+
+Esta arquitectura facilita el mantenimiento del proyecto, la reutilización del código y una mejor separación de responsabilidades.
