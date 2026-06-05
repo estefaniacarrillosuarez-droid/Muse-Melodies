@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseMelodies - Dashboard</title>
+    <style>
+        /* Estilo Streaming Moderno: Tonos Azul Oscuro, Gris Azulado y Verde Menta */
+        :root {
+            --bg-base: #060913;      /* Azul ultra oscuro de fondo */
+            --bg-sidebar: #121826;   /* Lateral gris azulado */
+            --bg-card: #0d1322;      /* Tarjetas de contenido */
+            --bg-input: #192239;     /* Fondo de inputs */
+            --accent-mint: #22e4ac;  /* Verde menta brillante */
+            --accent-hover: #1bc796;
+            --text-main: #ffffff;
+            --text-muted: #7282a1;
+            --border-color: #1e2942;
+            --danger: #ff5a5a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR LATERAL --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+            text-transform: lowercase;
+        }
+
+        .brand span {
+            color: var(--accent-mint);
+        }
+
+        .menu-section {
+            margin-bottom: 25px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 4px;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: #1d263b;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 40px;
+            padding-bottom: 120px; /* Espacio para el reproductor inferior */
+        }
+
+        .view-header {
+            margin-bottom: 30px;
+        }
+
+        .view-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        /* --- HERRAMIENTAS DE BÚSQUEDA --- */
+        .search-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        /* --- CUADRÍCULA DE FORMULARIOS Y TABLAS --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .panel-form {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px 14px;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-mint);
+        }
+
+        select[multiple] {
+            height: 85px;
+        }
+
+        /* --- BOTONES --- */
+        button.btn-primary {
+            background-color: var(--accent-mint);
+            color: var(--bg-base);
+            border: none;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        button.btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        button.btn-secondary {
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button.btn-secondary:hover {
+            background-color: #232e4d;
+        }
+
+        /* --- TABLAS / LISTADO ESTILO TRACKS --- */
+        .track-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .track-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .track-item:hover {
+            background-color: #121a2f;
+        }
+
+        .track-info-meta {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .track-subtext {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .btn-delete {
+            background: transparent;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .btn-delete:hover {
+            background-color: rgba(255, 90, 90, 0.1);
+        }
+
+        /* --- REPRODUCTOR INFERIOR DE LA CAPTURA --- */
+        .player-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(to top, #090e1a, #0d1424);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 100;
+        }
+
+        .player-track-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .player-cover-placeholder {
+            width: 44px;
+            height: 44px;
+            background-color: var(--bg-input);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 40%;
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .play-btn-circle {
+            width: 32px;
+            height: 32px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .progress-bar-bg {
+            flex: 1;
+            height: 4px;
+            background-color: #202b44;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            width: 35%;
+            height: 100%;
+            background-color: #ffffff;
+            border-radius: 2px;
+        }
+
+        /* Vistas ocultas de SPA */
+        .view-panel { display: none; }
+        .view-panel.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="brand">muse melodies<span>.</span></div>
+        
+        <div class="menu-section">
+            <div class="menu-title">Biblioteca de medios</div>
+            <button class="menu-item active" onclick="switchView('artistas-view', this)">Artistas</button>
+            <button class="menu-item" onclick="switchView('canciones-view', this)">Canciones</button>
+            <button class="menu-item" onclick="switchView('generos-view', this)">Géneros</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div id="artistas-view" class="view-panel active">
+            <div class="view-header">
+                <h2>Artistas</h2>
+                <div class="text-muted">Gestión del catálogo de músicos de la plataforma</div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-grid">
+                    <div class="form-group">
+                        <label>Buscar por Nombre (API Endpoint):</label>
+                        <input type="text" id="searchArtistaNombre" placeholder="Filtrar via backend...">
+                    </div>
+                    <div>
+                        <button type="button" class="btn-secondary" onclick="buscarArtistasBackend()">Ejecutar Query</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Filtro en Cliente por Género:</label>
+                        <input type="text" id="searchArtistaGenero" placeholder="Escriba un etiqueta..." onkeyup="filtrarArtistasLocal()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="panel-form">
+                    <div class="panel-title">Registrar Nuevo Artista</div>
+                    <form id="formArtista">
+                        <div class="form-group">
+                            <label>Nombre Comercial:</label>
+                            <input type="text" id="artistaNombre" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>País de Origen:</label>
+                                <input type="text" id="artistaPais">
+                            </div>
+                            <div class="form-group">
+                                <label>Año de Debut:</label>
+                                <input type="number" id="artistaAnio" min="1900" max="2100">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Asignar Etiquetas de Género (Ctrl+Click):</label>
+                            <select id="artistaGeneros" multiple required></select>
+                        </div>
+                        <button type="submit" class="btn-primary">Guardar Registro</button>
+                    </form>
+                </div>
+                <div class="track-list" id="listaArtistas"></div>
+            </div>
+        </div>
+
+        <div id="canciones-view" class="view-panel">
+            <div class="view-header">
+                <h2>Canciones</h2>
+                <div class="text-muted">Control de pistas de audio y metadatos del sistema de archivos</div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-grid" style="grid-template-columns: 1fr auto;">
+                    <div class="form-group">
+                        <label>Buscar Pistas por Álbum (API Endpoint):</label>
+                        <input type="text" id="searchCancionAlbum" placeholder="Escriba el nombre del álbum...">
+                    </div>
+                    <div>
+                        <button type="button" class="btn-secondary" onclick="buscarCancionesBackend()">Buscar Álbum</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="panel-form">
+                    <div class="panel-title">Inyectar Nueva Pista de Audio</div>
+                    <form id="formCancion">
+                        <div class="form-group">
+                            <label>Título de la Canción:</label>
+                            <input type="text" id="cancionTitulo" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Artista Vinculado:</label>
+                            <select id="cancionArtista" required></select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombre del Álbum:</label>
+                                <input type="text" id="cancionAlbum" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Duración (segundos):</label>
+                                <input type="number" id="cancionDuracion" min="60" max="600" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Clasificación de Contenido:</label>
+                            <select id="cancionExplicita" required>
+                                <option value="false">Apto para todo público</option>
+                                <option value="true">Contenido Explícito (Restringido)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary">Guardar Registro</button>
+                    </form>
+                </div>
+                <div class="track-list" id="listaCanciones"></div>
+            </div>
+        </div>
+
+        <div id="generos-view" class="view-panel">
+            <div class="view-header">
+                <h2>Géneros</h2>
+                <div class="text-muted">Administración de categorias de la música</div>
+            </div>
+
+            <div class="content-grid" style="grid-template-columns: 1fr 1.5fr;">
+                <div class="panel-form">
+                    <div class="panel-title">Crear Categoria de Género</div>
+                    <form id="formGenero">
+                        <div class="form-group">
+                            <label>Nombre del Género:</label>
+                            <input type="text" id="generoNombre" required placeholder="Ejemplo: Rock, Techno...">
+                        </div>
+                        <button type="submit" class="btn-primary">Guardar Categoria</button>
+                    </form>
+                </div>
+                <div class="track-list" id="listaGeneros"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="player-bar">
+        <div class="player-track-info">
+            <div class="player-cover-placeholder"></div>
+            <div>
+                <div class="track-info-meta" id="playerTitle">Console Operational</div>
+                <div class="track-subtext" id="playerSub">MuseMelodies API Client</div>
+            </div>
+        </div>
+        <div class="player-controls">
+            <div class="control-buttons">
+                <div>⏮</div>
+                <div class="play-btn-circle">▶︎</div>
+                <div>⏭</div>
+            </div>
+            <div class="progress-bar-container">
+                <div>01:29</div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+                <div>03:17</div>
+            </div>
+        </div>
+        <div style="color: var(--text-muted); font-size: 13px;">Reproductor</div>
+    </div>
+
+    <script>
+        const API_KEY = 'musemelodies123';
+        const headersGet = { 'Accept': 'application/json' };
+        const headersPostDelete = { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY };
+
+        let artistasCache = [];
+
+        // Cambio de pestañas SPA lateral
+        function switchView(viewId, element) {
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(b => b.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        async function manejarRespuesta(response) {
+            if (response.ok) {
+                if(response.status !== 204) return response.json();
+                return;
+            }
+            const err = await response.json().catch(() => ({}));
+            let msg = 'Error en el sistema central.';
+            if(response.status === 400) msg = 'Validacion incorrecta:\n' + JSON.stringify(err, null, 2);
+            if(response.status === 401) msg = 'Falta el token de autorizacion (401 Unauthorized).';
+            alert(msg);
+            throw new Error(msg);
+        }
+
+        // --- GÉNEROS ---
+        async function cargarGeneros() {
+            try {
+                const generos = await manejarRespuesta(await fetch('/api/v1/generos', { headers: headersGet }));
+                document.getElementById('listaGeneros').innerHTML = generos.map(g => `
+                    <div class="track-item">
+                        <div>
+                            <div class="track-info-meta">${g.nombre}</div>
+                            <div class="track-subtext">Identificador de Base de Datos: ${g.id}</div>
+                        </div>
+                        <button class="btn-delete" onclick="borrarGenero(${g.id})">Eliminar</button>
+                    </div>`).join('');
+                document.getElementById('artistaGeneros').innerHTML = generos.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('');
+            } catch (e) {}
+        }
+
+        document.getElementById('formGenero').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const body = JSON.stringify({ nombre: document.getElementById('generoNombre').value });
+            try {
+                await manejarRespuesta(await fetch('/api/v1/generos', { method: 'POST', headers: headersPostDelete, body }));
+                document.getElementById('formGenero').reset();
+                cargarGeneros();
+            } catch (e) {}
+        });
+
+        async function borrarGenero(id) {
+            if(!confirm('¿Eliminar de forma permanente este genero?')) return;
+            try {
+                await manejarRespuesta(await fetch(`/api/v1/generos/${id}`, { method: 'DELETE', headers: headersPostDelete }));
+                cargarGeneros();
+            } catch (e) {}
+        }
+
+        // --- ARTISTAS ---
+        function pintarArtistas(artistas) {
+            document.getElementById('listaArtistas').innerHTML = artistsHTML = artistas.map(a => {
+                const generosTxt = (a.generos || []).map(g => g.nombre).join(', ');
+                return `
+                <div class="track-item">
+                    <div>
+                        <div class="track-info-meta">${a.nombre}</div>
+                        <div class="track-subtext">Origen: ${a.paisOrigen || 'No especificado'} | Debut: ${a.anioDebut || 'No especificado'}</div>
+                        <div class="track-subtext" style="color: var(--accent-mint)">Generos: ${generosTxt || 'Ninguno asignado'}</div>
+                    </div>
+                    <button class="btn-delete" onclick="borrarArtista(${a.id})">Eliminar</button>
+                </div>`;
+            }).join('');
+            document.getElementById('cancionArtista').innerHTML = artistasCache.map(a => `<option value="${a.id}">${a.nombre}</option>`).join('');
+        }
+
+        async function cargarArtistas() {
+            try {
+                artistasCache = await manejarRespuesta(await fetch('/api/v1/artistas', { headers: headersGet }));
+                pintarArtistas(artistasCache);
+            } catch (e) {}
+        }
+
+        async function buscarArtistasBackend() {
+            const nombre = document.getElementById('searchArtistaNombre').value;
+            if(!nombre) return cargarArtistas();
+            try {
+                const artistas = await manejarRespuesta(await fetch(`/api/v1/artistas/buscar?nombre=${nombre}`, { headers: headersGet }));
+                pintarArtistas(artistas);
+            } catch (e) {}
+        }
+
+        function filtrarArtistasLocal() {
+            const query = document.getElementById('searchArtistaGenero').value.toLowerCase();
+            if(!query) return pintarArtistas(artistasCache);
+            const filtrados = artistasCache.filter(a => (a.generos || []).some(g => g.nombre.toLowerCase().includes(query)));
+            pintarArtistas(filtrados);
+        }
+
+        document.getElementById('formArtista').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const selectOptions = document.getElementById('artistaGeneros').selectedOptions;
+            const body = JSON.stringify({ 
+                nombre: document.getElementById('artistaNombre').value,
+                paisOrigen: document.getElementById('artistaPais').value,
+                anioDebut: parseInt(document.getElementById('artistaAnio').value) || null,
+                generos: Array.from(selectOptions).map(opt => ({ id: parseInt(opt.value) }))
+            });
+            try {
+                await manejarRespuesta(await fetch('/api/v1/artistas', { method: 'POST', headers: headersPostDelete, body }));
+                document.getElementById('formArtista').reset();
+                cargarArtistas();
+            } catch (e) {}
+        });
+
+        async function borrarArtista(id) {
+            if(!confirm('¿Eliminar artista seleccionado junto con todas sus pistas asociadas?')) return;
+            try {
+                await manejarRespuesta(await fetch(`/api/v1/artistas/${id}`, { method: 'DELETE', headers: headersPostDelete }));
+                cargarArtistas();
+                cargarCanciones();
+            } catch (e) {}
+        }
+
+        // --- CANCIONES ---
+        function pintarCanciones(canciones) {
+            document.getElementById('listaCanciones').innerHTML = canciones.map(c => `
+                <div class="track-item" style="cursor:pointer;" onclick="setPlayerTrack('${c.titulo}','${c.album}')">
+                    <div>
+                        <div class="track-info-meta">${c.titulo} ${c.explicita ? '<span style="color:var(--danger); font-size:10px; border:1px solid; padding:1px 3px; border-radius:3px; margin-left:6px;">EXPLICIT</span>' : ''}</div>
+                        <div class="track-subtext">Album: ${c.album} | Duracion: ${c.duracionSegundos} segundos</div>
+                    </div>
+                    <button class="btn-delete" onclick="event.stopPropagation(); borrarCancion(${c.id})">Eliminar</button>
+                </div>`).join('');
+        }
+
+        async function cargarCanciones() {
+            try {
+                const canciones = await manejarRespuesta(await fetch('/api/v1/canciones', { headers: headersGet }));
+                pintarCanciones(canciones);
+            } catch (e) {}
+        }
+
+        async function buscarCancionesBackend() {
+            const album = document.getElementById('searchCancionAlbum').value;
+            if(!album) return cargarCanciones();
+            try {
+                const canciones = await manejarRespuesta(await fetch(`/api/v1/canciones/filtrar?album=${album}`, { headers: headersGet }));
+                pintarCanciones(canciones);
+            } catch (e) {}
+        }
+
+        document.getElementById('formCancion').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const body = JSON.stringify({ 
+                titulo: document.getElementById('cancionTitulo').value,
+                album: document.getElementById('cancionAlbum').value,
+                duracionSegundos: parseInt(document.getElementById('cancionDuracion').value),
+                explicita: document.getElementById('cancionExplicita').value === "true",
+                artista: { id: parseInt(document.getElementById('cancionArtista').value) }
+            });
+            try {
+                await manejarRespuesta(await fetch('/api/v1/canciones', { method: 'POST', headers: headersPostDelete, body }));
+                document.getElementById('formCancion').reset();
+                cargarCanciones();
+            } catch (e) {}
+        });
+
+        async function borrarCancion(id) {
+            if(!confirm('¿Eliminar esta pista de audio del catalogo?')) return;
+            try {
+                await manejarRespuesta(await fetch(`/api/v1/canciones/${id}`, { method: 'DELETE', headers: headersPostDelete }));
+                cargarCanciones();
+            } catch (e) {}
+        }
+
+        function setPlayerTrack(title, sub) {
+            document.getElementById('playerTitle').innerText = title;
+            document.getElementById('playerSub').innerText = sub;
+        }
+
+        window.onload = () => {
+            cargarGeneros();
+            cargarArtistas();
+            cargarCanciones();
+        };
+    </script>
+</body>
+</html>
