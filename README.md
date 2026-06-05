@@ -109,42 +109,16 @@ Esta arquitectura facilita el mantenimiento del proyecto, la reutilización del 
 
 http://localhost:8080
 
----
+## Endpoints principales
 
-## Artistas
-
-| Método | Endpoint |
-|---|---|
-| GET | /api/v1/artistas |
-| GET | /api/v1/artistas/{id} |
-| GET | /api/v1/artistas/buscar |
-| POST | /api/v1/artistas |
-| PUT | /api/v1/artistas/{id} |
-| DELETE | /api/v1/artistas/{id} |
-
----
-
-## Canciones
-
-| Método | Endpoint |
-|---|---|
-| GET | /api/v1/canciones |
-| GET | /api/v1/canciones/{id} |
-| POST | /api/v1/canciones |
-| PUT | /api/v1/canciones/{id} |
-| DELETE | /api/v1/canciones/{id} |
-| GET | /api/v1/canciones/filtrar |
-
----
-
-## Géneros
-
-| Método | Endpoint |
-|---|---|
-| GET | /api/v1/generos |
-| GET | /api/v1/generos/{id} |
-| POST | /api/v1/generos |
-| DELETE | /api/v1/generos/{id} |
+| Artistas | Canciones | Géneros |
+|---|---|---|
+| GET /api/v1/artistas | GET /api/v1/canciones | GET /api/v1/generos |
+| GET /api/v1/artistas/{id} | GET /api/v1/canciones/{id} | GET /api/v1/generos/{id} |
+| GET /api/v1/artistas/buscar | GET /api/v1/canciones/filtrar | POST /api/v1/generos |
+| POST /api/v1/artistas | POST /api/v1/canciones | DELETE /api/v1/generos/{id} |
+| PUT /api/v1/artistas/{id} | PUT /api/v1/canciones/{id} |  |
+| DELETE /api/v1/artistas/{id} | DELETE /api/v1/canciones/{id} |  |
 
 ## Relaciones entre entidades
 
