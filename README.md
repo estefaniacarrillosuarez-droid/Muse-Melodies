@@ -51,13 +51,7 @@ spring.datasource.password=tu_contraseña_mysql
 Importar el proyecto en el IDE seleccionado.
 
 ### 4. Compilar y Ejecutar proyecto
-**Desde la Terminal:** Navega hasta la raíz del proyecto y ejecuta:
-
-```
-mvn spring-boot:run
-```
-
-Al arrancar, Hibernate generará de forma automática las tablas `artistas`, `canciones`, `generos` y la tabla intermedia `artista_genero` en tu base de datos gracias a la propiedad `spring.jpa.hibernate.ddl-auto=update`.
+**Desde la IDE:** Navega hasta el archivo MuseMelodiesApplication.java y pulsa en el icono de "Run".
 
 ### 5. Cómo probar los Endpoints protegidos (POST, PUT, DELETE)
 Dado que la API cuenta con un filtro de seguridad (`ApiKeyFilter`), si intentas crear, actualizar o eliminar un recurso sin autenticarte, el servidor rechazará la petición con un error `401 Unauthorized`.
@@ -92,7 +86,7 @@ A continuación se detalla cómo configurarlo en las principales herramientas:
 
 El proyecto sigue una arquitectura por capas para separar responsabilidades y mantener un código limpio y escalable.
 
-La estrctura utilizada es: 
+La estructura utilizada es: 
 
 * Controller -> Gestiona las peticiones HTTP y las respuestas de la API.
 * Service -> Contiene la lógica de negocio de la aplicación.
