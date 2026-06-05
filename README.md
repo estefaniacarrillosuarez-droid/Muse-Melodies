@@ -113,12 +113,12 @@ http://localhost:8080
 
 | Artistas | Canciones | Géneros |
 |---|---|---|
-| GET /api/v1/artistas | GET /api/v1/canciones | GET /api/v1/generos |
-| GET /api/v1/artistas/{id} | GET /api/v1/canciones/{id} | GET /api/v1/generos/{id} |
-| GET /api/v1/artistas/buscar | GET /api/v1/canciones/filtrar | POST /api/v1/generos |
-| POST /api/v1/artistas | POST /api/v1/canciones | DELETE /api/v1/generos/{id} |
-| PUT /api/v1/artistas/{id} | PUT /api/v1/canciones/{id} |  |
-| DELETE /api/v1/artistas/{id} | DELETE /api/v1/canciones/{id} |  |
+| **GET** /api/v1/artistas | **GET** /api/v1/canciones | **GET** /api/v1/generos |
+| **GET** /api/v1/artistas/{id} | **GET** /api/v1/canciones/{id} | **GET** /api/v1/generos/{id} |
+| **GET** /api/v1/artistas/buscar | **GET** /api/v1/canciones/filtrar | **POST** /api/v1/generos |
+| **POST** /api/v1/artistas | **POST** /api/v1/canciones | **DELETE** /api/v1/generos/{id} |
+| **PUT** /api/v1/artistas/{id} | **PUT** /api/v1/canciones/{id} |  |
+| **DELETE** /api/v1/artistas/{id} | **DELETE** /api/v1/canciones/{id} |  |
 
 ## Relaciones entre entidades
 
@@ -129,16 +129,3 @@ Relaciones implementadas:
 * Un artista puede tener muchas canciones (@OneToMany).
 * Una canción pertenece a un único artista (@ManyToOne).
 * Un artista puede tener varios géneros y un género puede pertenecer a varios artistas (@ManyToMany).
-
----
-
-## Interfaz web
-
-El proyecto incluye una interfaz web desarrollada con:
-
-* Consultar artistas
-* Buscar y filtrar información
-* Consultar canciones y género
-
-Para utilizar la interfaz: 
-
