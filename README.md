@@ -122,6 +122,30 @@ http://localhost:8080
 | PUT | /api/v1/artistas/{id} |
 | DELETE | /api/v1/artistas/{id} |
 
+---
+
+## Canciones
+
+| Método | Endpoint |
+|---|---|
+| GET | /api/v1/canciones |
+| GET | /api/v1/canciones/{id} |
+| POST | /api/v1/canciones |
+| PUT | /api/v1/canciones/{id} |
+| DELETE | /api/v1/canciones/{id} |
+| GET | /api/v1/canciones/filtrar |
+
+---
+
+## Géneros
+
+| Método | Endpoint |
+|---|---|
+| GET | /api/v1/generos |
+| GET | /api/v1/generos/{id} |
+| POST | /api/v1/generos |
+| DELETE | /api/v1/generos/{id} |
+
 ## Relaciones entre entidades
 
 La aplicación implementa distintas relaciones JPA entre las entidades del sistema.
