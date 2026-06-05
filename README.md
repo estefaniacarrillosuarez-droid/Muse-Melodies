@@ -102,3 +102,45 @@ La estrctura utilizada es:
 * Exception -> Contiene el manejo global de excepciones mediante @ControllerAdvice.
 
 Esta arquitectura facilita el mantenimiento del proyecto, la reutilización del código y una mejor separación de responsabilidades.
+
+## Endpoints principales
+
+### Base URL
+
+http://localhost:8080
+
+---
+
+## Artistas
+
+| Método | Endpoint |
+|---|---|
+| GET | /api/v1/artistas |
+| GET | /api/v1/artistas/{id} |
+| GET | /api/v1/artistas/buscar |
+| POST | /api/v1/artistas |
+| PUT | /api/v1/artistas/{id} |
+| DELETE | /api/v1/artistas/{id} |
+
+## Relaciones entre entidades
+
+La aplicación implementa distintas relaciones JPA entre las entidades del sistema.
+
+Relaciones implementadas:
+
+* Un artista puede tener muchas canciones (@OneToMany).
+* Una canción pertenece a un único artista (@ManyToOne).
+* Un artista puede tener varios géneros y un género puede pertenecer a varios artistas (@ManyToMany).
+
+---
+
+## Interfaz web
+
+El proyecto incluye una interfaz web desarrollada con:
+
+* Consultar artistas
+* Buscar y filtrar información
+* Consultar canciones y género
+
+Para utilizar la interfaz: 
+
