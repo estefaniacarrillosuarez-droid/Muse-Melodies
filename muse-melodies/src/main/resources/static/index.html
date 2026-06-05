@@ -363,7 +363,7 @@
 
     <div class="sidebar">
         <div class="brand">muse melodies<span>.</span></div>
-        
+       
         <div class="menu-section">
             <div class="menu-title">Biblioteca de medios</div>
             <button class="menu-item active" onclick="switchView('artistas-view', this)">Artistas</button>
@@ -377,7 +377,7 @@
         <div id="artistas-view" class="view-panel active">
             <div class="view-header">
                 <h2>Artistas</h2>
-                <div class="text-muted">Gestión del catálogo de músicos de la plataforma</div>
+                <div class="text-muted">Gestión e indexación del catálogo de músicos de la plataforma</div>
             </div>
 
             <div class="search-container">
@@ -482,7 +482,7 @@
         <div id="generos-view" class="view-panel">
             <div class="view-header">
                 <h2>Géneros</h2>
-                <div class="text-muted">Administración de categorias de la música</div>
+                <div class="text-muted">Administración de categorias taxonómicas de la música</div>
             </div>
 
             <div class="content-grid" style="grid-template-columns: 1fr 1.5fr;">
@@ -526,6 +526,7 @@
     </div>
 
     <script>
+        const BASE_URL = 'http://localhost:8080'; // <-- Ruta del backend
         const API_KEY = 'musemelodies123';
         const headersGet = { 'Accept': 'application/json' };
         const headersPostDelete = { 'Content-Type': 'application/json', 'X-API-KEY': API_KEY };
@@ -556,7 +557,7 @@
         // --- GÉNEROS ---
         async function cargarGeneros() {
             try {
-                const generos = await manejarRespuesta(await fetch('/api/v1/generos', { headers: headersGet }));
+                const generos = await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/generos`, { headers: headersGet }));
                 document.getElementById('listaGeneros').innerHTML = generos.map(g => `
                     <div class="track-item">
                         <div>
@@ -573,7 +574,7 @@
             e.preventDefault();
             const body = JSON.stringify({ nombre: document.getElementById('generoNombre').value });
             try {
-                await manejarRespuesta(await fetch('/api/v1/generos', { method: 'POST', headers: headersPostDelete, body }));
+                await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/generos`, { method: 'POST', headers: headersPostDelete, body }));
                 document.getElementById('formGenero').reset();
                 cargarGeneros();
             } catch (e) {}
@@ -582,14 +583,14 @@
         async function borrarGenero(id) {
             if(!confirm('¿Eliminar de forma permanente este genero?')) return;
             try {
-                await manejarRespuesta(await fetch(`/api/v1/generos/${id}`, { method: 'DELETE', headers: headersPostDelete }));
+                await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/generos/${id}`, { method: 'DELETE', headers: headersPostDelete }));
                 cargarGeneros();
             } catch (e) {}
         }
 
         // --- ARTISTAS ---
         function pintarArtistas(artistas) {
-            document.getElementById('listaArtistas').innerHTML = artistsHTML = artistas.map(a => {
+            document.getElementById('listaArtistas').innerHTML = artistas.map(a => {
                 const generosTxt = (a.generos || []).map(g => g.nombre).join(', ');
                 return `
                 <div class="track-item">
@@ -606,7 +607,7 @@
 
         async function cargarArtistas() {
             try {
-                artistasCache = await manejarRespuesta(await fetch('/api/v1/artistas', { headers: headersGet }));
+                artistasCache = await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/artistas`, { headers: headersGet }));
                 pintarArtistas(artistasCache);
             } catch (e) {}
         }
@@ -615,7 +616,7 @@
             const nombre = document.getElementById('searchArtistaNombre').value;
             if(!nombre) return cargarArtistas();
             try {
-                const artistas = await manejarRespuesta(await fetch(`/api/v1/artistas/buscar?nombre=${nombre}`, { headers: headersGet }));
+                const artistas = await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/artistas/buscar?nombre=${nombre}`, { headers: headersGet }));
                 pintarArtistas(artistas);
             } catch (e) {}
         }
@@ -630,14 +631,14 @@
         document.getElementById('formArtista').addEventListener('submit', async (e) => {
             e.preventDefault();
             const selectOptions = document.getElementById('artistaGeneros').selectedOptions;
-            const body = JSON.stringify({ 
+            const body = JSON.stringify({
                 nombre: document.getElementById('artistaNombre').value,
                 paisOrigen: document.getElementById('artistaPais').value,
                 anioDebut: parseInt(document.getElementById('artistaAnio').value) || null,
                 generos: Array.from(selectOptions).map(opt => ({ id: parseInt(opt.value) }))
             });
             try {
-                await manejarRespuesta(await fetch('/api/v1/artistas', { method: 'POST', headers: headersPostDelete, body }));
+                await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/artistas`, { method: 'POST', headers: headersPostDelete, body }));
                 document.getElementById('formArtista').reset();
                 cargarArtistas();
             } catch (e) {}
@@ -646,7 +647,7 @@
         async function borrarArtista(id) {
             if(!confirm('¿Eliminar artista seleccionado junto con todas sus pistas asociadas?')) return;
             try {
-                await manejarRespuesta(await fetch(`/api/v1/artistas/${id}`, { method: 'DELETE', headers: headersPostDelete }));
+                await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/artistas/${id}`, { method: 'DELETE', headers: headersPostDelete }));
                 cargarArtistas();
                 cargarCanciones();
             } catch (e) {}
@@ -666,7 +667,7 @@
 
         async function cargarCanciones() {
             try {
-                const canciones = await manejarRespuesta(await fetch('/api/v1/canciones', { headers: headersGet }));
+                const canciones = await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/canciones`, { headers: headersGet }));
                 pintarCanciones(canciones);
             } catch (e) {}
         }
@@ -675,14 +676,14 @@
             const album = document.getElementById('searchCancionAlbum').value;
             if(!album) return cargarCanciones();
             try {
-                const canciones = await manejarRespuesta(await fetch(`/api/v1/canciones/filtrar?album=${album}`, { headers: headersGet }));
+                const canciones = await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/canciones/filtrar?album=${album}`, { headers: headersGet }));
                 pintarCanciones(canciones);
             } catch (e) {}
         }
 
         document.getElementById('formCancion').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const body = JSON.stringify({ 
+            const body = JSON.stringify({
                 titulo: document.getElementById('cancionTitulo').value,
                 album: document.getElementById('cancionAlbum').value,
                 duracionSegundos: parseInt(document.getElementById('cancionDuracion').value),
@@ -690,7 +691,7 @@
                 artista: { id: parseInt(document.getElementById('cancionArtista').value) }
             });
             try {
-                await manejarRespuesta(await fetch('/api/v1/canciones', { method: 'POST', headers: headersPostDelete, body }));
+                await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/canciones`, { method: 'POST', headers: headersPostDelete, body }));
                 document.getElementById('formCancion').reset();
                 cargarCanciones();
             } catch (e) {}
@@ -699,7 +700,7 @@
         async function borrarCancion(id) {
             if(!confirm('¿Eliminar esta pista de audio del catalogo?')) return;
             try {
-                await manejarRespuesta(await fetch(`/api/v1/canciones/${id}`, { method: 'DELETE', headers: headersPostDelete }));
+                await manejarRespuesta(await fetch(`${BASE_URL}/api/v1/canciones/${id}`, { method: 'DELETE', headers: headersPostDelete }));
                 cargarCanciones();
             } catch (e) {}
         }
