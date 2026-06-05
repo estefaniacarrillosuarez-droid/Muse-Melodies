@@ -17,6 +17,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -42,6 +43,7 @@ public class Genero {
     @ManyToMany(mappedBy = "generos")
     @JsonIgnore // Evita el bucle infinito al pedir los datos en Postman
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Builder.Default
     private Set<Artista> artistas = new HashSet<>();
 }

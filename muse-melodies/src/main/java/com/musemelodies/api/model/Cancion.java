@@ -10,7 +10,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.AllArgsConstructor;
 
 @Entity
@@ -35,6 +37,8 @@ public class Cancion {
     @ManyToOne
     @JoinColumn(name = "artista_id", nullable = false)
     @JsonIgnoreProperties("canciones") // Evita bucles en el JSON
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Artista artista;
 
     // ÁLBUM: Debe estar entre 1-100 caracteres.
